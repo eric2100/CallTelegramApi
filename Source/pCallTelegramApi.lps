@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="10">
+      <Unit0>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="52"/>
+        <CursorPos X="29" Y="82"/>
+        <UsageCount Value="38"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\fcl-base\src\custapp.pp"/>
+        <UnitName Value="CustApp"/>
+        <EditorIndex Value="7"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="C:\Users\ADMINI~1\AppData\Local\Temp\BNZ.5d0c53045a40e19\internetdownloadform.pas"/>
+        <UnitName Value="InternetDownloadForm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="7"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\..\..\Backup\lazarus\onlinepackagemanager\packages\Indy10\indylaz.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="13" Y="5"/>
+        <UsageCount Value="11"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="C:\Users\Administrator\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Protocols\IdSSLOpenSSL.pas"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="3166"/>
+        <CursorPos Y="3183"/>
+        <UsageCount Value="18"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\Users\Administrator\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Protocols\IdHTTP.pas"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="545"/>
+        <CursorPos X="14" Y="565"/>
+        <UsageCount Value="18"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="C:\Users\Administrator\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Protocols\IdURI.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="594"/>
+        <CursorPos Y="611"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="C:\lazarus\components\fpweb\lazweb.pp"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="6"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="C:\Users\Administrator\AppData\Local\lazarus\onlinepackagemanager\packages\cryptini\ucryptini.pas"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="44" Y="10"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\Users\Administrator\AppData\Local\lazarus\onlinepackagemanager\packages\Indy10\Core\IdAboutVCL.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="22"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit9>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="75" TopLine="35"/>
+      </Position1>
+      <Position2>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="13" Column="12"/>
+      </Position2>
+      <Position3>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="42" Column="38" TopLine="19"/>
+      </Position3>
+      <Position4>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="33" Column="19" TopLine="17"/>
+      </Position4>
+      <Position5>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="35" Column="34" TopLine="27"/>
+      </Position5>
+      <Position6>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="37" Column="28" TopLine="15"/>
+      </Position6>
+      <Position7>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="41" Column="53" TopLine="21"/>
+      </Position7>
+      <Position8>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="49" Column="54" TopLine="27"/>
+      </Position8>
+      <Position9>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="52" Column="63" TopLine="32"/>
+      </Position9>
+      <Position10>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="41" Column="25" TopLine="31"/>
+      </Position10>
+      <Position11>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="88" TopLine="15"/>
+      </Position11>
+      <Position12>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="43" Column="48" TopLine="25"/>
+      </Position12>
+      <Position13>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="38" Column="12" TopLine="18"/>
+      </Position13>
+      <Position14>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="59" Column="18" TopLine="26"/>
+      </Position14>
+      <Position15>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="60" Column="18" TopLine="27"/>
+      </Position15>
+      <Position16>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="38" Column="12" TopLine="18"/>
+      </Position16>
+      <Position17>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="74" Column="48" TopLine="41"/>
+      </Position17>
+      <Position18>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="72" Column="50" TopLine="56"/>
+      </Position18>
+      <Position19>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="76" Column="33" TopLine="56"/>
+      </Position19>
+      <Position20>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="39" Column="13" TopLine="31"/>
+      </Position20>
+      <Position21>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="81" Column="9" TopLine="47"/>
+      </Position21>
+      <Position22>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="80" Column="58" TopLine="61"/>
+      </Position22>
+      <Position23>
+        <Filename Value="pCallTelegramApi.lpr"/>
+      </Position23>
+      <Position24>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="84" Column="39" TopLine="59"/>
+      </Position24>
+      <Position25>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="81" Column="43" TopLine="60"/>
+      </Position25>
+      <Position26>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="88" Column="10" TopLine="68"/>
+      </Position26>
+      <Position27>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="87" Column="10" TopLine="68"/>
+      </Position27>
+      <Position28>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="88" TopLine="68"/>
+      </Position28>
+      <Position29>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="90" Column="8" TopLine="70"/>
+      </Position29>
+      <Position30>
+        <Filename Value="pCallTelegramApi.lpr"/>
+        <Caret Line="102" Column="55" TopLine="66"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
