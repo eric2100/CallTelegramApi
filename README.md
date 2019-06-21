@@ -1,0 +1,2 @@
+# CallTelegramApi
+windows命令提示字元傳送telegram訊息與檔案
