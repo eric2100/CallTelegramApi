@@ -14,6 +14,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   idhttp,
   SynaCode,
   IniFiles,
+  IdSSLOpenSSL,
   IdMultipartFormData;
 
 type
@@ -32,6 +33,7 @@ type
   procedure CallTelegramApi.DoRun;
   var
     HTTP: TIdHTTP;
+    SSL     : TIdSSLIOHandlerSocketOpenSSL;
     Url: string;
     INI: TINIFile;
     ProxyServer, Token, SendChatId: string;
@@ -56,6 +58,11 @@ type
     INI.Free;
 
     HTTP := TIdHTTP.Create(nil);
+    SSL                         := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
+       SSL.ConnectTimeout          := HTTP.ConnectTimeout;
+       SSL.ReadTimeout             := HTTP.ReadTimeout;
+       SSL.SSLOptions.SSLVersions  := [sslvTLSv1, sslvTLSv1_1, sslvTLSv1_2];
+       HTTP.IOHandler              := SSL;
     with HTTP do
     begin
       ProxyParams.ProxyServer := ProxyServer;
