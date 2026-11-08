@@ -25,13 +25,10 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="2">
+    <RequiredPackages Count="1">
       <Item1>
-        <PackageName Value="laz_synapse"/>
-      </Item1>
-      <Item2>
         <PackageName Value="indylaz"/>
-      </Item2>
+      </Item1>
     </RequiredPackages>
     <Units Count="1">
       <Unit0>
@@ -48,7 +45,6 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <Libraries Value="..\..\..\Backup\lazarus\onlinepackagemanager\packages\Indy10\Protocols"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
   </CompilerOptions>

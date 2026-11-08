@@ -1,127 +1,125 @@
-{%BuildWorkingDir ../Release}
-{%RunWorkingDir ../Release}
-{%RunFlags MESSAGES+}
 program pCallTelegramApi;
 
-{$mode objfpc}{$H+}
+{$mode objfpc}{$H+}{$codepage utf8}
 
-uses {$IFDEF UNIX} {$IFDEF UseCThreads}
-  cthreads, {$ENDIF} {$ENDIF}
-  Classes,
-  SysUtils,
-  CustApp,
-  { you can add units after this }
-  idhttp,
-  SynaCode,
-  IniFiles,
-  IdSSLOpenSSL,
-  IdMultipartFormData;
+uses
+  Classes, SysUtils, IniFiles, fpjson, jsonparser,
+  IdHTTP, IdSSLOpenSSL, IdMultipartFormData;
 
-type
-
-  { CallTelegramApi }
-
-  CallTelegramApi = class(TCustomApplication)
-  protected
-    procedure DoRun; override;
-  public
-    constructor Create(TheOwner: TComponent); override;
-    destructor Destroy; override;
+procedure CheckResponse(const Response: string);
+var
+  Data, OK: TJSONData;
+begin
+  Data := GetJSON(Response);
+  try
+    if Data.JSONType <> jtObject then
+      raise Exception.Create('Invalid Bot API response');
+    OK := TJSONObject(Data).Find('ok');
+    if (OK = nil) or (OK.JSONType <> jtBoolean) then
+      raise Exception.Create('Invalid Bot API response: missing ok');
+    if not OK.AsBoolean then
+      raise Exception.Create('Bot API: ' + TJSONObject(Data).Get('description', 'request failed'));
+  finally
+    Data.Free;
   end;
+end;
 
-  { CallTelegramApi }
-  procedure CallTelegramApi.DoRun;
-  var
-    HTTP: TIdHTTP;
-    SSL     : TIdSSLIOHandlerSocketOpenSSL;
-    Url: string;
-    INI: TINIFile;
-    ProxyServer, Token, SendChatId: string;
-    ProxyPort: integer;
-    FormData: TIdMultipartFormDataStream;
-  begin
-    { add your program here }
-    if (ParamCount = 0) or (ParamCount > 2) then
-    begin
-      writeln('Exampl: Param1 is SendText');
-      writeln('        Param2 is SendFilePath');
-      Terminate;
-      exit;
-    end;
-
-    // 讀取ini設定
-    INI := TINIFile.Create('CallTelegram.ini');
-    ProxyServer := INI.ReadString('MAIN', 'ProxyServer', '');
-    ProxyPort := INI.ReadInteger('MAIN', 'ProxyPort', 0);
-    Token := INI.ReadString('MAIN', 'Token', '');
-    SendChatId := INI.ReadString('MAIN', 'SendChatId', '');
-    INI.Free;
-
-    HTTP := TIdHTTP.Create(nil);
-    SSL                         := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
-       SSL.ConnectTimeout          := HTTP.ConnectTimeout;
-       SSL.ReadTimeout             := HTTP.ReadTimeout;
-       SSL.SSLOptions.SSLVersions  := [sslvTLSv1, sslvTLSv1_1, sslvTLSv1_2];
-       HTTP.IOHandler              := SSL;
-    with HTTP do
-    begin
-      ProxyParams.ProxyServer := ProxyServer;
-      ProxyParams.ProxyPort := ProxyPort;
-      HandleRedirects := True;
-      Request.ContentType := 'multipart/form-data';
-    end;
-
-    //傳送訊息
-    Url :=
-      'https://api.telegram.org/bot' + Token + '/sendMessage?chat_id=' +
-      SendChatId + '&text=' + EncodeUrl(AnsiToUtf8(ParamStr(1)));
-    HTTP.Get(Url);
-
-    //--------------------------------------------------------------------------
-    //傳送檔案
-    if ParamCount = 2 then
-    begin
+procedure Send;
+var
+  HTTP: TIdHTTP;
+  SSL: TIdSSLIOHandlerSocketOpenSSL;
+  INI: TIniFile;
+  MessageData, FileData: TIdMultiPartFormDataStream;
+  ApiBaseUrl, Token, ChatId, ProxyServer, ConfigPath: string;
+  ConnectTimeout, ReadTimeout, ProxyPort: Integer;
+begin
+  Token := '';
+  HTTP := nil;
+  MessageData := nil;
+  FileData := nil;
+  try
+    try
+      if (ParamCount < 1) or (ParamCount > 2) then
+        raise Exception.Create('Usage: pCallTelegramApi.exe "message" ["file path"]');
+      ConfigPath := ExtractFilePath(ExpandFileName(ParamStr(0))) + 'CallTelegram.ini';
+      if not FileExists(ConfigPath) then
+        raise Exception.Create('CallTelegram.ini must be beside the executable');
+      INI := TIniFile.Create(ConfigPath);
       try
-        Url := 'https://api.telegram.org/bot' + Token + '/sendDocument';
+        Token := Trim(INI.ReadString('MAIN', 'Token', ''));
+        ChatId := Trim(INI.ReadString('MAIN', 'SendChatId', ''));
+        ApiBaseUrl := Trim(INI.ReadString('MAIN', 'ApiBaseUrl', 'https://api.telegram.org'));
+        ProxyServer := Trim(INI.ReadString('MAIN', 'ProxyServer', ''));
+        ProxyPort := StrToIntDef(INI.ReadString('MAIN', 'ProxyPort', ''), 0);
+        ConnectTimeout := INI.ReadInteger('MAIN', 'ConnectTimeout', 30000);
+        ReadTimeout := INI.ReadInteger('MAIN', 'ReadTimeout', 3600000);
+      finally
+        INI.Free;
+      end;
+      if (Token = '') or (ChatId = '') then
+        raise Exception.Create('Token and SendChatId must be configured');
+      if ApiBaseUrl = '' then ApiBaseUrl := 'https://api.telegram.org';
+      while (Length(ApiBaseUrl) > 0) and (ApiBaseUrl[Length(ApiBaseUrl)] = '/') do
+        Delete(ApiBaseUrl, Length(ApiBaseUrl), 1);
+      if (Pos('http://', LowerCase(ApiBaseUrl)) <> 1) and
+         (Pos('https://', LowerCase(ApiBaseUrl)) <> 1) then
+        raise Exception.Create('ApiBaseUrl must start with http:// or https://');
+      if (Pos('?', ApiBaseUrl) > 0) or (Pos('#', ApiBaseUrl) > 0) then
+        raise Exception.Create('ApiBaseUrl must not contain a query or fragment');
+      if (ConnectTimeout <= 0) or (ReadTimeout <= 0) then
+        raise Exception.Create('Timeouts must be positive milliseconds');
+      if (ProxyServer <> '') and ((ProxyPort < 1) or (ProxyPort > 65535)) then
+        raise Exception.Create('ProxyPort must be between 1 and 65535');
 
-        FormData := TIdMultiPartFormDataStream.Create;
-        FormData.AddFormField('chat_id', SendChatId);
-        FormData.AddFile('document', ParamStr(2));
-        HTTP.Post(Url, FormData);
-      except
-        on E: EIdHTTPProtocolException do
-        begin
-          WriteLn(E.Message);
-          WriteLn(E.ErrorMessage);
-        end;
-        on E: Exception do
-        begin
-          WriteLn(E.Message);
-        end;
+      { Open the file before sending anything. Indy streams the attachment
+        from disk instead of loading the entire file into memory. }
+      if ParamCount = 2 then
+      begin
+        FileData := TIdMultiPartFormDataStream.Create;
+        FileData.AddFormField('chat_id', ChatId, 'utf-8').ContentTransfer := '8bit';
+        FileData.AddFile('document', ParamStr(2), 'application/octet-stream');
+      end;
+      HTTP := TIdHTTP.Create(nil);
+      HTTP.ConnectTimeout := ConnectTimeout;
+      HTTP.ReadTimeout := ReadTimeout;
+      HTTP.ProxyParams.ProxyServer := ProxyServer;
+      HTTP.ProxyParams.ProxyPort := ProxyPort;
+      { Do not follow redirects with a bot token or replay an upload. }
+      HTTP.HandleRedirects := False;
+      if Pos('https://', LowerCase(ApiBaseUrl)) = 1 then
+      begin
+        SSL := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
+        SSL.ConnectTimeout := ConnectTimeout;
+        SSL.ReadTimeout := ReadTimeout;
+        SSL.SSLOptions.SSLVersions := [sslvTLSv1_2];
+        HTTP.IOHandler := SSL;
+      end;
+      ApiBaseUrl := ApiBaseUrl + '/bot' + Token + '/';
+      MessageData := TIdMultiPartFormDataStream.Create;
+      MessageData.AddFormField('chat_id', ChatId, 'utf-8').ContentTransfer := '8bit';
+      MessageData.AddFormField('text', AnsiToUtf8(ParamStr(1)), 'utf-8').ContentTransfer := '8bit';
+      CheckResponse(HTTP.Post(ApiBaseUrl + 'sendMessage', MessageData));
+      if FileData <> nil then
+        CheckResponse(HTTP.Post(ApiBaseUrl + 'sendDocument', FileData));
+      WriteLn('OK');
+    except
+      on E: Exception do
+      begin
+        { Exception messages may include a request URL. Never print the token. }
+        if Token <> '' then
+          WriteLn(StdErr, 'Error: ', StringReplace(E.Message, Token, '<REDACTED>', [rfReplaceAll]))
+        else
+          WriteLn(StdErr, 'Error: ', E.Message);
+        ExitCode := 1;
       end;
     end;
-
+  finally
+    FileData.Free;
+    MessageData.Free;
     HTTP.Free;
-    // stop program loop
-    Terminate;
   end;
+end;
 
-  constructor CallTelegramApi.Create(TheOwner: TComponent);
-  begin
-    inherited Create(TheOwner);
-    StopOnException := True;
-  end;
-
-  destructor CallTelegramApi.Destroy;
-  begin
-    inherited Destroy;
-  end;
-
-var
-  Application: CallTelegramApi;
 begin
-  Application := CallTelegramApi.Create(nil);
-  Application.Title := 'TelegramApi';
-  Application.Run;
-  Application.Free;
+  Send;
 end.

@@ -1,0 +1,7 @@
+Source/lib/
+Source/*.lps
+*.o
+*.ppu
+*.rsj
+__pycache__/
+.build/
